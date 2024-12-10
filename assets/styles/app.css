@@ -1,3 +1,14 @@
 body {
     background-color: skyblue;
 }
+
+.dropdown-menu {
+    position: absolute;
+    transform: translate3d(0, 0, 0);
+}
+
+.welcome-text {
+    text-decoration: underline;
+    font-weight: bold;
+    color: #007bff;
+}

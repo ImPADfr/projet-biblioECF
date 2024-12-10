@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page Inscription{% endblock %}
+
+{% block body %}
+
+<div id="registerForm" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 600px;">
+        <h1 class="text-center mb-4">S'inscrire</h1>
+
+        <div class="text-danger">{{ form_errors(registrationForm) }}</div>
+
+        {{ form_start(registrationForm) }}
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.prenom, { 'attr': { 'class': 'form-control' } }) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.nom, { 'attr': { 'class': 'form-control' } }) }}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.adress, { 'attr': { 'class': 'form-control' } }) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.ville, { 'attr': { 'class': 'form-control' } }) }}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.dateDeNaissance, { 'attr': { 'class': 'form-control' } }) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.tel, { 'attr': { 'class': 'form-control' } }) }}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.email, { 'attr': { 'class': 'form-control' } }) }}
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.plainPassword, { 'label': 'Mot de passe', 'attr': { 'class': 'form-control' } }) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_row(registrationForm.plainPasswordConfirm, { 'label': 'Confirmation du mot de passe', 'attr': { 'class': 'form-control' } }) }}
+                </div>
+            </div>
+
+
+
+            <div class="form-check mb-3">
+                {{ form_row(registrationForm.agreeTerms, { 'attr': { 'class': 'form-check-input' } }) }}
+            </div>
+
+            <button type="submit" class="btn btn-lg btn-primary w-100">S'inscrire</button>
+
+        {{ form_end(registrationForm) }}
+    </div>
+</div>
+
+{% endblock %}

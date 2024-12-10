@@ -37,7 +37,7 @@ class UserCrudController extends AbstractCrudController
                 ])
                 ->allowMultipleChoices()
                 ->renderAsBadges(),
-            DateField::new('date_de_naissance', 'Date de naissance'),
+            DateField::new('date_de_naissance', 'Date de naissance')->setFormat('d/M/Y'),
         ];
     }
 

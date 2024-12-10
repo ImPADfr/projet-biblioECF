@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+            <h1 class="h4 mb-0">Mon Profil</h1>
+        </div>
+        <div class="card-body">
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            {{ form_start(form) }}
+            <div class="row">
+
+                <div class="col-md-6">
+                    {{ form_row(form.prenom, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_row(form.nom, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="row mt-3">
+
+                <div class="col-md-6">
+                    {{ form_row(form.email, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_row(form.tel, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="row mt-3">
+
+                <div class="col-md-6">
+                    {{ form_row(form.adress, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_row(form.ville, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="row mt-3">
+
+                <div class="col-md-6">
+                    {{ form_row(form.dateDeNaissance, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <hr class="mt-4 mb-4">
+
+            <h3 class="h5">Modifier le mot de passe</h3>
+            <div class="row mt-3">
+
+                <div class="col-md-6">
+                    {{ form_row(form.plainPassword, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ form_row(form.plainPasswordConfirm, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <button type="submit" class="btn btn-success">Mettre à jour</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

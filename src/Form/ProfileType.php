@@ -7,8 +7,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ProfileType extends AbstractType
 {
@@ -29,13 +31,25 @@ class ProfileType extends AbstractType
             ->add('tel', textType::class, ['label' => 'Téléphone'])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Nouveau mot de passe',
-                'required' => false, // Le mot de passe est facultatif
-                'mapped' => false,   // Ce champ ne doit pas être lié directement à l'entité User
+                'required' => false, 
+                'mapped' => false,   
             ])
             ->add('plainPasswordConfirm', PasswordType::class, [
                 'label' => 'Confirmez le mot de passe',
                 'required' => false,
-                'mapped' => false, // Ce champ ne doit pas être lié directement à l'entité User
+                'mapped' => false, 
+            ])
+            ->add('avatar', FileType::class, [
+                'label' => 'Choississez votre avatar',
+                'mapped' => false, 
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5M',
+                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif'],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image valide',
+                    ])
+                ],
+                'required' => false,
             ]);
     }
 

@@ -11,6 +11,23 @@
         </div>
         <div class="card-body">
 
+            <div class="d-flex flex-column align-items-center mb-4">
+                {% if app.user.avatar %}
+                    <label for="form_avatar">
+                        <img src="{{ asset('uploads/avatars/' ~ app.user.avatar) }}" 
+                            alt="Avatar de {{ app.user.prenom }}" 
+                            class="img-thumbnail rounded-circle" 
+                            style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;" />
+                    </label>
+                {% else %}
+                    <label for="form_avatar">
+                        <img src="{{ asset('uploads/avatars/default-avatar.png') }}" 
+                            alt="Avatar par défaut" 
+                            class="img-thumbnail rounded-circle" 
+                            style="width: 150px; height: 150px; cursor: pointer;" />
+                    </label>
+                {% endif %}
+            </div>
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ label }}">{{ message }}</div>
@@ -19,7 +36,6 @@
 
             {{ form_start(form) }}
             <div class="row">
-
                 <div class="col-md-6">
                     {{ form_row(form.prenom, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
                 </div>
@@ -30,7 +46,6 @@
             </div>
 
             <div class="row mt-3">
-
                 <div class="col-md-6">
                     {{ form_row(form.email, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
                 </div>
@@ -41,7 +56,6 @@
             </div>
 
             <div class="row mt-3">
-
                 <div class="col-md-6">
                     {{ form_row(form.adress, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
                 </div>
@@ -52,9 +66,11 @@
             </div>
 
             <div class="row mt-3">
-
                 <div class="col-md-6">
                     {{ form_row(form.dateDeNaissance, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="col-md-6 text-center">
+                     {{ form_widget(form.avatar, {'attr': {'id': 'form_avatar'}}) }}             
                 </div>
             </div>
 
@@ -62,7 +78,6 @@
 
             <h3 class="h5">Modifier le mot de passe</h3>
             <div class="row mt-3">
-
                 <div class="col-md-6">
                     {{ form_row(form.plainPassword, {'label_attr': {'class': 'form-label'}, 'attr': {'class': 'form-control'}}) }}
                 </div>
@@ -79,5 +94,6 @@
         </div>
     </div>
 </div>
+
 
 {% endblock %}

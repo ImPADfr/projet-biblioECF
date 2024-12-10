@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -51,6 +52,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?string $tel = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Image(
+     *     maxSize="5M",
+     *     mimeTypes={"image/jpeg", "image/png", "image/gif"}
+     * )
+     */
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $avatar = null;
 
     public function getId(): ?int
     {
@@ -194,6 +205,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTel(?string $tel): self
     {
         $this->tel = $tel;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): static
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

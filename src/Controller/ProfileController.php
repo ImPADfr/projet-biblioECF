@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProfileController extends AbstractController
 {
@@ -28,6 +29,19 @@ class ProfileController extends AbstractController
 
         // Gérer la soumission
         if ($form->isSubmitted() && $form->isValid()) {
+            // Traiter l'avatar
+            /** @var UploadedFile $avatarFile */
+            $avatarFile = $form->get('avatar')->getData();
+
+            if ($avatarFile) {
+                $newFilename = uniqid().'.'.$avatarFile->guessExtension();
+                $avatarFile->move(
+                    $this->getParameter('avatars_directory'),
+                    $newFilename
+                );
+                $user->setAvatar($newFilename);
+            }
+
             $entityManager->persist($user);
             $entityManager->flush();
 

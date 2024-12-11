@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Abonnement{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if abonnement %}
+            <h2 class="mb-4 text-center">Votre Abonnement Actif</h2>
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5>Abonnement {{ abonnement.type|capitalize }}</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Date de début :</strong> {{ abonnement.dateDebut|date('d/m/Y') }}</p>
+                    <p><strong>Date de fin :</strong> {{ abonnement.dateFin|date('d/m/Y') }}</p>
+                </div>
+                <div class="card-footer text-end text-center">
+                    <a href="{{ path('app_home') }}" class="btn btn-outline-primary">Retour à l'accueil</a>
+                </div>
+            </div>
+
+            {% else %}
+
+                <h1>Choisissez votre abonnement</h1>
+
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Abonnement Mensuel</div>
+                        <div class="card-body">
+                            <p>Commence le : {{ dateDebut|date('d/m/Y') }}</p>
+                            <p>Expire le : {{ dateFinMensuel|date('d/m/Y') }}</p>
+                            <a href="{{ path('abonnement_page', { type: 'mensuel' }) }}" class="btn btn-primary">S'abonner</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Abonnement Annuel</div>
+                        <div class="card-body">
+                            <p>Commence le : {{ dateDebut|date('d/m/Y') }}</p>
+                            <p>Expire le : {{ dateFinAnnuel|date('d/m/Y') }}</p>
+                            <a href="{{ path('abonnement_page', { type: 'annuel' }) }}" class="btn btn-primary">S'abonner</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

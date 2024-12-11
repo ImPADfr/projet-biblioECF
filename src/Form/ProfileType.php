@@ -40,7 +40,7 @@ class ProfileType extends AbstractType
                 'mapped' => false, 
             ])
             ->add('avatar', FileType::class, [
-                'label' => 'Choississez votre avatar',
+                'label' => 'Choississez votre avatar :',
                 'mapped' => false, 
                 'constraints' => [
                     new File([

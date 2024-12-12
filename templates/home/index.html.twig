@@ -3,17 +3,47 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Bienvenu sur BiblioECF!</h1>
+    <section class="hero-section">
+        <h1>Bienvenue sur BiblioECF!</h1>
+        <p>Découvrez une vaste collection de livres et réservez des salles pour vos événements.</p>
+        {% if not is_granted('ROLE_USER') %}
+            <a href="{{ path('app_register') }}" class="cta-button">S'inscrire</a>
+        {% endif %}
+    </section>
 
-    {% if not is_granted('ROLE_ABONNE') %}
-        <a href="{{ path('abonnement_page') }}">S'abonner</a>    
-    {% endif %}
 
-</div>
+    <section class="section">
+        <h2>Nos Services</h2>
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-book"></i>
+                <h3>Emprunt de livres</h3>
+                <p>Accédez à une large sélection de livres pour tous les goûts et toutes les catégories.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-calendar-alt"></i>
+                <h3>Réservation de salles</h3>
+                <p>Réservez des salles pour vos réunions, lectures ou événements associatifs.</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-users"></i>
+                <h3>Activités Associatives</h3>
+                <p>Participez à nos activités communautaires, que ce soit pour des clubs de lecture ou des événements collaboratifs.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Pourquoi s'abonner ?</h2>
+        <p>En vous abonnant à BiblioECF, vous aurez accès à l'emprunt des livres de notre catalogue, des salles de réunion, et vous soutiendrez notre mission d'encourager la lecture et l'apprentissage collectif.</p>
+        {% if not is_granted('ROLE_ABONNE') %}
+            <a href="{{ path('abonnement_page') }}" class="cta-button">Abonnez-vous dès maintenant</a>
+        {% endif %}
+    </section>
+
+    <section class="section" style="background: #f4f4f4;">
+        <h2>Ce que nos membres disent</h2>
+    </section>
+
 {% endblock %}

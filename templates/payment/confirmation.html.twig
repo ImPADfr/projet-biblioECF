@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation de Paiement{% endblock %}
+
+{% block body %}
+<div class="container mt-5 text-center">
+    <h1 class="mb-4">Paiement Réussi</h1>
+    <p class="lead">Merci pour votre paiement !</p>
+    <p>Votre abonnement a été activé avec succès.</p>
+    <a href="{{ path('app_home') }}" class="btn btn-primary mt-3">Retour à l'accueil</a>
+</div>
+{% endblock %}

@@ -8,10 +8,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class AbonnementController extends AbstractController
 {
-    #[Route('/abonnement', name: 'abonnement_page')]
+    private TokenStorageInterface $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
 
     #[Route('/abonnement', name: 'abonnement_page')]
     public function abonnement(Request $request, EntityManagerInterface $em): Response
@@ -34,11 +41,10 @@ class AbonnementController extends AbstractController
             return $this->redirectToRoute('abonnement_page');
         }
     
-        // Vérifier si l'utilisateur a déjà un abonnement actif
         $abonnementActif = $em->getRepository(Abonnement::class)->findOneBy(['user' => $user]);
     
         if ($abonnementActif) {
-            $abonnement = $abonnementActif; // Transmettre l'abonnement existant à la vue
+            $abonnement = $abonnementActif;
         } elseif ($type) {
             $abonnement = new Abonnement();
             $abonnement->setDateDebut($dateDebut);
@@ -55,6 +61,10 @@ class AbonnementController extends AbstractController
                 $roles[] = 'ROLE_ABONNE';
                 $user->setRoles($roles);
                 $em->persist($user);
+
+                // Met à jour le token avec les nouveaux rôles
+                $token = new UsernamePasswordToken($user, 'main', $roles);
+                $this->tokenStorage->setToken($token);
             }
     
             $abonnement->setUser($user);
@@ -73,11 +83,4 @@ class AbonnementController extends AbstractController
             'abonnement' => $abonnement,
         ]);
     }
-
-    #[Route('/abonnement/confirmation', name: 'abonnement_confirmation')]
-    public function confirmation(): Response
-    {
-        return $this->render('abonnement/confirmation.html.twig');
-    }       
 }
-

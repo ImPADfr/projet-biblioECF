@@ -10,11 +10,9 @@
             <div class="col-md-4">
                 <div class="card shadow">
                     <img src="{{ asset('uploads/images/' ~ livre.image) }}" class="card-img-top" alt="Image de {{ livre.titre }}">
-                    <div class="card-body">
+                    <div class="card-body text-center">
                         <h5 class="card-title">{{ livre.titre }}</h5>
-                        <p class="card-text"><strong>Auteur :</strong> {{ livre.auteur }}</p>
-                        <p class="card-text"><strong>Résumé :</strong> {{ livre.resume|slice(0, 100) ~ '...' }}</p>
-                        <p class="card-text"><strong>Publié en :</strong> {{ livre.anneePublication }}</p>
+                        <a href="{{ path('catalogue_detail_livre', { id: livre.id }) }}" class="btn btn-primary mt-4">Voir détail</a>
                     </div>
                 </div>
             </div>

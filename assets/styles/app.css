@@ -199,3 +199,15 @@ body {
     font-size: 14px;
     color: #333;
 }
+
+.detail-page-comments {
+    display: block; 
+}
+
+.detail-page-comments .comment {
+    flex: none;
+    width: 100%; 
+    margin-bottom: 20px; 
+    display: block; 
+    align-items: flex-start; 
+}

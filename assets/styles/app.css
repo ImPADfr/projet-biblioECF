@@ -211,3 +211,31 @@ body {
     display: block; 
     align-items: flex-start; 
 }
+
+input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 30px;
+    color: gray;
+    cursor: pointer;
+}
+
+.star-rating label:hover,
+.star-rating input:checked ~ label {
+    color: orange;
+}
+
+.star {
+    font-size: 30px;
+    color: #d3d3d3;
+}
+
+.star.filled {
+    color: gold;
+}
+
+.star.empty {
+    color: #d3d3d3;
+}

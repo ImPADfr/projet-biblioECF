@@ -27,6 +27,15 @@ class Commentaire
     #[ORM\JoinColumn(nullable: false)]
     private ?Livres $livre = null;
 
+    #[ORM\Column(type: 'integer', nullable: false)]
+    #[Assert\NotBlank(message: 'Veuillez donner une note.')]
+    #[Assert\Range(
+        min: 1,
+        max: 5,
+        notInRangeMessage: 'La note doit être comprise entre {{ min }} et {{ max }}.',
+    )]
+    private int $note;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +85,18 @@ class Commentaire
     public function setLivre(?Livres $livre): static
     {
         $this->livre = $livre;
+
+        return $this;
+    }
+
+    public function getNote(): int
+    {
+        return $this->note;
+    }
+
+    public function setNote(int $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }

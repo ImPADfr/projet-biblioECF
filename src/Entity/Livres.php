@@ -33,7 +33,7 @@ class Livres
     /**
      * @var Collection<int, Commentaire>
      */
-    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'livre', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'livre', orphanRemoval: true, cascade: ['remove'])]
     private Collection $commentaires;
 
     public function __construct()

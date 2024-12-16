@@ -26,6 +26,21 @@
                 <h5><strong>Auteur :</strong> {{ livre.auteur }}</h5>
                 <p><strong>Résumé :</strong> {{ livre.resume }}</p>
                 <p><strong>Publié en :</strong> {{ livre.anneePublication }}</p>
+                {% if is_granted('ROLE_ABONNE') %}
+                    {% set empruntActif = livre.emprunts|filter(e => e.dateRetour is null)|first %}
+
+                    {% if empruntActif and empruntActif.user == app.user %}
+                        <button class="btn btn-secondary mt-3">
+                            <a href="{{ path('catalogue_rendre', {id: livre.id}) }}">Rendre</a>
+                        </button>
+                    {% elseif empruntActif %}
+                        <button class="btn btn-secondary mt-3" disabled>Indisponible</button>
+                    {% else %}
+                        <button class="btn btn-secondary mt-3">
+                            <a href="{{ path('catalogue_emprunter', {id: livre.id}) }}">Emprunter</a>
+                        </button>
+                    {% endif %}
+                {% endif %}
                 <a href="{{ path('catalogue_index') }}" class="btn btn-secondary mt-3">Revenir au catalogue</a>
             </div>
         </div>

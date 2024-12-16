@@ -77,10 +77,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $livre;
 
+    /**
+     * @var Collection<int, Emprunt>
+     */
+    #[ORM\OneToMany(targetEntity: Emprunt::class, mappedBy: 'user')]
+    private Collection $emprunts;
+
     public function __construct()
     {
         $this->abonnements = new ArrayCollection();
         $this->livre = new ArrayCollection();
+        $this->emprunts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -300,6 +307,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($livre->getUser() === $this) {
                 $livre->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Emprunt>
+     */
+    public function getEmprunts(): Collection
+    {
+        return $this->emprunts;
+    }
+
+    public function addEmprunt(Emprunt $emprunt): self
+    {
+        if (!$this->emprunts->contains($emprunt)) {
+            $this->emprunts->add($emprunt);
+            $emprunt->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmprunt(Emprunt $emprunt): self
+    {
+        if ($this->emprunts->removeElement($emprunt)) {
+            // set the owning side to null (unless already changed)
+            if ($emprunt->getUser() === $this) {
+                $emprunt->setUser(null);
             }
         }
 

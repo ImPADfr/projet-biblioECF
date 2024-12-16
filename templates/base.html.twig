@@ -34,9 +34,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('catalogue_index') }}">Notre catalogue de Livres</a>
                             </li>
-                            <li class="nav-item">
+                            {# <li class="nav-item">
                                 <a class="nav-link" href="#">Nos salles</a>
-                            </li>
+                            </li> #}
                         </ul>
 
                         <ul class="nav ms-auto">
@@ -53,6 +53,11 @@
                                         {% endif %}
                                         <li><a class="dropdown-item text-center" href="{{ path('user_profile') }}">Profil</a></li>
                                         <li><a class="dropdown-item text-center" href="{{ path('abonnement_page') }}">Abonnement</a></li>
+                                        {% if is_granted('ROLE_ABONNE') %}
+                                        <li>
+                                            <a class="dropdown-item text-center" href="{{ path('historique_emprunts') }}">Historique des emprunts</a>
+                                        </li>
+                                        {% endif %}
                                         <li>
                                             <form action="{{ path('app_logout') }}" class="text-center" method="post">
                                                 <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>Se déconnecter</button>

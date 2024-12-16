@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Livres;
+use App\Entity\Emprunt;
 use App\Entity\Commentaire;
 use App\Form\CommentaireType;
 use App\Repository\LivresRepository;
@@ -14,10 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-#[Route('/catalogue', name: 'catalogue')]
+#[Route('/catalogue', name: 'catalogue_')]
 class CatalogueController extends AbstractController
 {
-    #[Route('/', name: '_index')]
+    #[Route('/', name: 'index')]
     public function index(LivresRepository $livresRepository): Response
     {
         $livres = $livresRepository->findAll();
@@ -27,7 +29,7 @@ class CatalogueController extends AbstractController
         ]);
     }
 
-    #[Route('/detail/{id}', name: '_detail_livre')]
+    #[Route('/detail/{id}', name: 'detail_livre')]
     public function detailLivre(
         int $id,
         LivresRepository $livresRepository,
@@ -90,4 +92,64 @@ class CatalogueController extends AbstractController
             'averageNote' => $averageNote,
         ]);
     }
+
+    #[Route('/detail/{id}/emprunter', name: 'emprunter')]
+    #[IsGranted('ROLE_ABONNE')]
+    public function emprunter(Livres $livre, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté pour emprunter un livre.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifier si le livre est déjà emprunté
+        $empruntActif = $entityManager->getRepository(Emprunt::class)
+            ->findOneBy(['livre' => $livre, 'dateRetour' => null]);
+
+        if ($empruntActif) {
+            $this->addFlash('warning', 'Ce livre est déjà emprunté.');
+            return $this->redirectToRoute('catalogue_detail_livre', ['id' => $livre->getId()]);
+        }
+
+        $emprunt = new Emprunt();
+        $emprunt->setUser($user);
+        $emprunt->setLivre($livre);
+        $emprunt->setDateEmprunt(new \DateTime());
+        $emprunt->setDateRetour(null);
+
+        $entityManager->persist($emprunt);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Livre emprunté avec succès, bonne lecture !');
+        return $this->redirectToRoute('catalogue_detail_livre', ['id' => $livre->getId()]);
+    }
+
+
+    #[Route('/detail/{id}/rendre', name: 'rendre')]
+    #[IsGranted('ROLE_ABONNE')]
+    public function rendre(Livres $livre, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('error', 'Vous devez être connecté pour emprunter un livre.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $emprunt = $entityManager->getRepository(Emprunt::class)
+            ->findOneBy(['livre' => $livre, 'user' => $user, 'dateRetour' => null]);
+
+        if (!$emprunt) {
+            $this->addFlash('warning', 'Vous n\'avez pas emprunté ce livre.');
+            return $this->redirectToRoute('catalogue_detail_livre', ['id' => $livre->getId()]);
+        }
+
+        // Mettre à jour la date de retour
+        $emprunt->setDateRetour(new \DateTime());
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Livre rendu avec succès.');
+        return $this->redirectToRoute('catalogue_detail_livre', ['id' => $livre->getId()]);
+    }
+
 }

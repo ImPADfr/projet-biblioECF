@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique des Emprunts{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Historique de vos emprunts</h2>
+
+        {% if emprunts is empty %}
+            <p>Vous n'avez pas encore emprunté de livres.</p>
+        {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Livre</th>
+                        <th scope="col">Date d'emprunt</th>
+                        <th scope="col">Date de retour</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emprunt in emprunts %}
+                        <tr>
+                            <td>
+                            <a href="{{ path('catalogue_detail_livre', {'id': emprunt.livre.id}) }}">
+                                {{ emprunt.livre.titre }}
+                            </a>
+                            </td>
+                            <td>{{ emprunt.dateEmprunt|date('d/m/Y') }}</td>
+                            <td>{{ emprunt.dateRetour ? emprunt.dateRetour|date('d/m/Y') : 'Non retourné' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %}
